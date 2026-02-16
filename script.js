@@ -104,7 +104,7 @@ function deletdata() {
 
   xhr.open(
     "DELETE",
-    "https://json-server-production-1b86.up.railway.app/productsposts/",
+    "https://json-server-production-1b86.up.railway.app/productsposts/16",
     true,
   );
 
@@ -119,6 +119,8 @@ function deletdata() {
   xhr.send();
 }
 
+deletdata()
+
 
 
 
@@ -130,17 +132,26 @@ container.innerHTML = "";
 
 products.forEach(product => {
   const div = document.createElement("div");
-  image = JSON.stringify(product.image)
+  const image = JSON.stringify(product.image);
+  const qty = product.qty;
+  const title = product.title; 
+  const description =product.description;
+  const id = product.id;
+  const price = product.price
+var functionDetails = `addtoCart(${qty} , "${title}" , "${description}", ${id} , ${image} ,${price})`
+
+  let singleQuoteResponse = 
   div.innerHTML += `
   <h3>${product.title}</h3>
 <p>Price:${product.price}</p>
-<button id="addtocart" onclick="addtoCart(${product.qty,product.title,product.description,product.id,image})">Add to Cart</button>
+<button id="addtocart" onclick='${functionDetails}'>Add to Cart</button>
 <hr>
   
 
 
 
   `
+
 
   container.appendChild(div)
   
@@ -213,6 +224,7 @@ const div = document.createElement("div")
     div.innerHTML += `
     <h3>${data.title}</h3>
   <p>Price:${data.price}</p>
+ 
   
    <hr>
     `
@@ -223,7 +235,7 @@ const div = document.createElement("div")
 }
 
 
-function addtoCart(qty,title,description,id,image){
+function addtoCart(qty,title,description,id,image,price){
 const xhr =new XMLHttpRequest();
 
 
@@ -236,10 +248,11 @@ xhr.setRequestHeader("Content-Type","Application/Json")
 
 const data = {
 id:id,
-title:String(title),
-description:String(description),
+title:title,
+description:description,
 qty:qty,
-image:image
+image:image,
+price:price
 }
 
 
@@ -250,6 +263,6 @@ console.log(xhr.status)
 }
 }
 
-xhr.send(JSON.stringify(data))
+xhr.send(JSON.stringify(data));
 
 }
